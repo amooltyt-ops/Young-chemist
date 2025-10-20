@@ -74,7 +74,7 @@
 <body>
 
 <div class="chat-container">
-  <div class="chat-header">صغير الكيمياء</div>
+  <div class="chat-header">مساعد الذكاء الاصطناعي</div>
   <div class="chat-box" id="chatBox"></div>
   <div class="chat-input">
     <input type="text" id="inputField" placeholder="اكتب رسالتك...">
@@ -88,7 +88,7 @@
 
   function appendMessage(content, sender) {
     const msg = document.createElement('div');
-    msg.className = `message ${sender}`;
+    msg.className = message ${sender};
     msg.textContent = content;
     chatBox.appendChild(msg);
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -118,4 +118,3 @@
 
 </body>
 </html>
-
