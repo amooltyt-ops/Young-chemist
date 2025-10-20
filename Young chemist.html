@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>دردشة ذكاء اصطناعي</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .chat-container {
+      width: 400px;
+      height: 600px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: #0078d7;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .chat-box {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 80%;
+    }
+    .user {
+      background: #dcf8c6;
+      align-self: flex-end;
+    }
+    .bot {
+      background: #f1f0f0;
+      align-self: flex-start;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background: #0078d7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">صغير الكيمياء</div>
+  <div class="chat-box" id="chatBox"></div>
+  <div class="chat-input">
+    <input type="text" id="inputField" placeholder="اكتب رسالتك...">
+    <button onclick="sendMessage()">إرسال</button>
+  </div>
+</div>
+
+<script>
+  const chatBox = document.getElementById('chatBox');
+  const inputField = document.getElementById('inputField');
+
+  function appendMessage(content, sender) {
+    const msg = document.createElement('div');
+    msg.className = `message ${sender}`;
+    msg.textContent = content;
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  function sendMessage() {
+    const userMessage = inputField.value.trim();
+    if (!userMessage) return;
+
+    appendMessage(userMessage, 'user');
+    inputField.value = '';
+
+    fetch('https://script.google.com/macros/s/AKfycbwzRRCdmhcFWCpQSFuV-oq0J0e-j9j4DgnV2QUysOwqX7Ol0z4_XLf65bEC7uqWqjZoUA/exec', {
+      method: 'POST',
+      body: JSON.stringify({ message: userMessage }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      appendMessage(data.reply, 'bot');
+    })
+    .catch(err => {
+      appendMessage('حدث خطأ في الاتصال بالخادم.', 'bot');
+    });
+  }
+</script>
+
+</body>
+</html>
